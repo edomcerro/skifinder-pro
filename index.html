@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkiFinder Pro | Trova il tuo sci ideale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN SYSTEM --- */
+        :root {
+            --primary: #00C2FF;
+            /* Ciano Elettrico */
+            --primary-dark: #0088B3;
+            --dark: #121212;
+            /* Nero Profondo */
+            --dark-card: #1E1E1E;
+            /* Grigio scuro card */
+            --light: #F4F7F6;
+            --white: #FFFFFF;
+            --text-main: #333;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            /* Evita scroll orizzontale */
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: rgba(18, 18, 18, 0.95);
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+            border-bottom: 2px solid var(--primary-dark);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--dark);
+        }
+
+        /* --- HERO SECTION (SCIATORE + MONTAGNA) --- */
+        header {
+            height: 100vh;
+            /* Immagine di sciatore in fresca con montagne */
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)),
+                url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80&w=2670&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 4rem;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 15px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .cta-btn {
+            background-color: var(--primary);
+            color: var(--dark);
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 50px;
+            margin-top: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 194, 255, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 194, 255, 0.7);
+        }
+
+        /* --- QUIZ CONTAINER --- */
+        #quiz-section {
+            max-width: 900px;
+            margin: 120px auto 50px;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: var(--dark);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        /* GRID 3 COLONNE PER GENERE */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-option {
+            border: 2px solid #EEE;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-option:hover {
+            border-color: var(--primary);
+            background: #F0FBFF;
+        }
+
+        .card-option.selected {
+            border-color: var(--primary);
+            background: #E0F7FF;
+            color: var(--primary-dark);
+            font-weight: bold;
+        }
+
+        .card-option i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        .card-option h3 {
+            margin: 10px 0 5px;
+            font-size: 1.1rem;
+        }
+
+        .card-option p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0;
+        }
+
+        /* INPUT STYLE */
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            font-weight: 700;
+            color: var(--dark);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        /* --- RISULTATI --- */
+        #results-section {
+            max-width: 1300px;
+            margin: 100px auto;
+            padding: 20px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .ski-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #EEE;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ski-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+
+        /* HEADER CARD SCURA (Brand Bianco) */
+        .ski-header {
+            background: var(--dark);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ski-brand {
+            color: var(--white);
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ski-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .ski-body {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .ski-model-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .specs-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .spec-tag {
+            background: #eee;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .boot-rec {
+            background: #F0FBFF;
+            border-left: 4px solid var(--primary);
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 0 5px 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .buy-link {
+            display: block;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .buy-link:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo"><i class="fa-solid fa-person-skiing"></i> SKI<span style="color:var(--primary)">FINDER</span>
+        </div>
+        <button onclick="goHome()" class="nav-btn"><i class="fa-solid fa-rotate-left"></i> Ricomincia</button>
+    </nav>
+
+    <header id="hero">
+        <h1>Trova l'Anima Gemella<br><span style="color:var(--primary); font-size:0.6em;">Delle nevi</span></h1>
+        <p>Analisi biomeccanica su 500+ modelli 2026. Prezzi reali. Scelta professionale.</p>
+        <button onclick="startApp()" class="cta-btn">Trova il mio Sci <i class="fa-solid fa-arrow-right"></i></button>
+    </header>
+
+    <section id="quiz-section" class="hidden">
+
+        <div class="step active" id="step-1">
+            <h2>Chi userà questi sci?</h2>
+            <div class="grid-3">
+                <div class="card-option" onclick="setPref('gender', 'uomo'); nextStep(2)">
+                    <i class="fa-solid fa-person"></i>
+                    <h3>Uomo</h3>
+                </div>
+                <div class="card-option" onclick="setPref('gender', 'unisex'); nextStep(2)">
+                    <i class="fa-solid fa-people-arrows"></i>
+                    <h3>Unisex</h3>
+                    <p>Modelli neutri</p>
+                </div>
+                <div class="card-option" onclick="setPref('gender', 'donna'); nextStep(2)">
+                    <i class="fa-solid fa-person-dress"></i>
+                    <h3>Donna</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="step" id="step-2">
+            <h2>Dati Biomeccanici</h2>
+            <div class="grid-2">
+                <div>
+                    <label>Altezza (cm)</label>
+                    <input type="number" id="height" placeholder="Es. 175">
+                </div>
+                <div>
+                    <label>Peso (kg)</label>
+                    <input type="number" id="weight" placeholder="Es. 75">
+                </div>
+            </div>
+            <button onclick="checkStep2()" class="cta-btn" style="width:100%; margin-top:20px;">Avanti</button>
+        </div>
+
+        <div class="step" id="step-3">
+            <h2>Livello Tecnico</h2>
+            <div class="grid-3">
+                <div class="card-option" onclick="setPref('level', 'principiante'); nextStep(4)">
+                    <h3>Principiante</h3>
+                    <p>Sto imparando / Spazzaneve</p>
+                </div>
+                <div class="card-option" onclick="setPref('level', 'intermedio'); nextStep(4)">
+                    <h3>Intermedio</h3>
+                    <p>Sci paralleli / Piste rosse</p>
+                </div>
+                <div class="card-option" onclick="setPref('level', 'avanzato'); nextStep(4)">
+                    <h3>Esperto</h3>
+                    <p>Conduzione binaria / Carving</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="step" id="step-4">
+            <h2>Dove e Come scii?</h2>
+
+            <label>Terreno Prevalente</label>
+            <select id="category">
+                <option value="pista">100% Pista (Carving / Race)</option>
+                <option value="allmountain">All Mountain (Pista + Neve rovinata/Fresca)</option>
+                <option value="freeride">Freeride (Neve profonda)</option>
+                <option value="freestyle">Park & Pipe (Salti)</option>
+            </select>
+
+            <label>Approccio alla sciata (Performance vs Comfort)</label>
+            <div class="grid-2" style="margin-top:10px;">
+                <div class="card-option" onclick="setPref('mood', 'comfort'); highlight(this)">
+                    <i class="fa-solid fa-couch"></i>
+                    <h3>Comfort / Relax</h3>
+                    <p>Sci più morbido, meno stancante</p>
+                </div>
+                <div class="card-option" onclick="setPref('mood', 'performance'); highlight(this)">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h3>Performance</h3>
+                    <p>Sci rigido, reattivo, preciso</p>
+                </div>
+            </div>
+            <button onclick="nextStep(5)" class="cta-btn" style="width:100%">Avanti</button>
+        </div>
+
+        <div class="step" id="step-5">
+            <h2>Raffinamento Ricerca</h2>
+
+            <label>Che raggio di curva cerchi?</label>
+            <select id="radius">
+                <option value="any">Indifferente (Consigliato)</option>
+                <option value="corto">Corto (Slalom - Curve strette < 13m)</option>
+                <option value="medio">Medio (Polivalente 14-17m)</option>
+                <option value="lungo">Lungo (Gigante/Velocità > 18m)</option>
+            </select>
+
+            <label>Budget Massimo (Listino)</label>
+            <select id="budget">
+                <option value="9999">Nessun Limite</option>
+                <option value="900">Premium (< 900€)</option>
+                <option value="700">Media gamma (< 700€)</option>
+                <option value="500">Entry Level (< 500€)</option>
+            </select>
+
+            <label>Marca Preferita</label>
+            <select id="brand">
+                <option value="tutte">Tutte le Marche</option>
+                <option value="Atomic">Atomic</option>
+                <option value="Head">Head</option>
+                <option value="Rossignol">Rossignol</option>
+                <option value="Volkl">Völkl</option>
+                <option value="Salomon">Salomon</option>
+                <option value="Nordica">Nordica</option>
+                <option value="Blizzard">Blizzard</option>
+                <option value="Fischer">Fischer</option>
+                <option value="K2">K2</option>
+            </select>
+
+            <button onclick="findSki()" class="cta-btn" style="width:100%; margin-top:20px;">MOSTRA I MIEI SCI</button>
+        </div>
+    </section>
+
+    <section id="results-section" class="hidden">
+        <h2 style="text-align:center; font-size:2.5rem;">I Tuoi Match Perfetti</h2>
+        <div id="results-grid" class="results-grid"></div>
+        <div style="text-align:center; margin-top:50px;">
+            <button onclick="goHome()" class="cta-btn" style="background:var(--dark);">Nuova Ricerca</button>
+        </div>
+    </section>
+
+    <script>
+        // --- DATABASE ---
+        const skiDB = [
+            // ATOMIC
+            { brand: "Atomic", model: "Redster G9 Revoshock S", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "lungo", mood: "performance", price: 1100, desc: "La macchina da gigante. Stabile a velocità folli." },
+            { brand: "Atomic", model: "Redster S9 Revo", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 1100, desc: "Slalom puro. Agile e reattivo." },
+            { brand: "Atomic", model: "Cloud C12", gender: "donna", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 850, desc: "Top di gamma donna. Eleganza e potenza." },
+            { brand: "Atomic", model: "Maverick 95 Ti", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, desc: "Va ovunque. Morde il ghiaccio, galleggia in fresca." },
+            { brand: "Atomic", model: "Bent 100", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, desc: "Lo sci artistico più versatile del mercato." },
+
+            // HEAD
+            { brand: "Head", model: "Supershape e-Magnum", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 850, desc: "Il best seller mondiale. Facile e divertente." },
+            { brand: "Head", model: "Worldcup Rebels e-Speed", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "lungo", mood: "performance", price: 950, desc: "Velocità pura senza la fatica di uno sci FIS." },
+            { brand: "Head", model: "Super Joy", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 650, desc: "Leggero (Graphene) per sciare tutto il giorno." },
+
+            // ROSSIGNOL
+            { brand: "Rossignol", model: "Hero Elite LT Ti", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "lungo", mood: "performance", price: 950, desc: "Curve ampie e stabilità. Struttura in Titanal." },
+            { brand: "Rossignol", model: "Experience 82 Basalt", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, desc: "Il basalto assorbe le vibrazioni. Comfort totale." },
+            { brand: "Rossignol", model: "Nova 6", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 450, desc: "Perfetto per progredire in sicurezza." },
+
+            // VOLKL
+            { brand: "Volkl", model: "Racetiger GS", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "lungo", mood: "performance", price: 980, desc: "Lama tedesca. Preciso sul ghiaccio." },
+            { brand: "Volkl", model: "Mantra M6", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "lungo", mood: "performance", price: 850, desc: "Il Re dell'All Mountain. Indistruttibile." },
+
+            // NORDICA
+            { brand: "Nordica", model: "Dobermann Spitfire 70", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 850, desc: "Multiraggio: punta da slalom, corpo da gigante." },
+            { brand: "Nordica", model: "Enforcer 94", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, desc: "Potente ovunque. Due strati di metallo." },
+
+            // SALOMON
+            { brand: "Salomon", model: "S/Max 10", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, desc: "Intuitivo. Ti aiuta a chiudere la curva." },
+            { brand: "Salomon", model: "QST 98", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, desc: "Giocoso in fresca, sicuro in pista." },
+
+            // FISCHER
+            { brand: "Fischer", model: "RC4 Worldcup SC", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 980, desc: "Iconico buco in punta. Ingresso curva immediato." },
+            { brand: "Fischer", model: "Ranger 102", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 750, desc: "Freeride moderno, coda piatta per stabilità." },
+
+            // K2 & BLIZZARD
+            { brand: "Blizzard", model: "Thunderbird R15", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 900, desc: "Active Armor Vibration. Incollato al terreno." },
+            { brand: "K2", model: "Poacher", gender: "unisex", cat: "freestyle", lvl: "avanzato", radius: "medio", mood: "performance", price: 550, desc: "Indistruttibile. Lo sci degli X-Games." },
+            // --- PACCHETTO ROSSIGNOL ---
+        { brand: "Rossignol", model: "Hero Elite ST Ti", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 950, desc: "Slalom Carve reattivo. Cambio di spigolo fulmineo per curve strette." },
+        { brand: "Rossignol", model: "Hero Elite MT Ca", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, desc: "Carbonio invece del metallo. Leggero, accessibile e divertente." },
+        { brand: "Rossignol", model: "Experience 86 Basalt", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 700, desc: "Assorbe ogni vibrazione grazie al basalto. Ottimo su neve trasformata." },
+        { brand: "Rossignol", model: "Sender 104 Ti", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 800, desc: "Big Mountain charger. Stabile ad alta velocità in neve fresca." },
+        { brand: "Rossignol", model: "Blackops 98", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, desc: "Twin tip giocoso per park e neve fresca. Pop esagerato." },
+        { brand: "Rossignol", model: "Nova 14 Ti", gender: "donna", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 750, desc: "Top di gamma pista donna. Eleganza e tenuta sul ghiaccio." },
+
+        // --- PACCHETTO FISCHER ---
+        { brand: "Fischer", model: "The Curv DTI", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, desc: "Dinamico e stabile. Triplo raggio per variare l'arco di curva." },
+        { brand: "Fischer", model: "RC One 78 GT", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, desc: "Largo sotto il piede per stabilità extra su piste rovinate." },
+        { brand: "Fischer", model: "Ranger 96", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, desc: "Il tuttofare definitivo. Flex calibrato per ogni terreno." },
+        { brand: "Fischer", model: "Ranger 108", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 800, desc: "Potente in powder, sorprende per la tenuta in pista." },
+        { brand: "Fischer", model: "Nightstick 97", gender: "unisex", cat: "freestyle", lvl: "avanzato", radius: "medio", mood: "performance", price: 550, desc: "Costruzione sandwich robusta per resistere ai rail più duri." },
+
+        // --- PACCHETTO DYNASTAR ---
+        { brand: "Dynastar", model: "Speed Course Master GS", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "lungo", mood: "performance", price: 1000, desc: "Sensazione gara ma gestibile. Contatto sci-neve incredibile." },
+        { brand: "Dynastar", model: "M-Pro 99", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 780, desc: "Direzionale, preciso, potente. Per chi scia forte fuori pista." },
+        { brand: "Dynastar", model: "M-Free 90", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 500, desc: "Agile e svelto. Perfetto per iniziare col freestyle backcountry." },
+        { brand: "Dynastar", model: "E-Lite 7", gender: "donna", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, desc: "Leggero e fluido. Sciare tutto il giorno senza stancarsi." },
+
+        // --- PACCHETTO NORDICA (Extra) ---
+        { brand: "Nordica", model: "Dobermann SLR", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 950, desc: "Slalom Recoil. Reattività massima nello stretto." },
+        { brand: "Nordica", model: "Unleashed 98", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, desc: "Twin tip moderno per surfare la montagna intera." },
+        { brand: "Nordica", model: "Santa Ana 88", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "performance", price: 680, desc: "Best seller donna. Anima in legno balsa e metallo." },
+        { brand: "Nordica", model: "Sportmachine 3", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 450, desc: "Facile ingresso curva, perdona gli errori." },
+
+        // --- PACCHETTO ELAN ---
+        { brand: "Elan", model: "Ripstick 96", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "comfort", price: 700, desc: "Asimmetrico (Destro/Sinistro). Incredibilmente intuitivo." },
+        { brand: "Elan", model: "Wingman 86 Ti", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, desc: "Carving potente su pista, larghezza extra per stabilità." },
+        { brand: "Elan", model: "Wildcat 82 C", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, desc: "Carbonio per leggerezza. Ottimo su nevi primaverili." },
+        { brand: "Elan", model: "Primetime 55", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 850, desc: "Nuova tecnologia PowerMatch. Tenuta spigolo superiore." },
+        ,
+         // --- PACCHETTO SALOMON (ESPANSIONE) ---
+{ brand: "Salomon", model: "S/Race SL 12", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 950, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw8374828f/images/L47355100/L47355100_0_G1.jpg", desc: "Slalom puro. Tecnologia Blade per stabilità incredibile sul ghiaccio." },
+{ brand: "Salomon", model: "Stance 90", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 700, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw1554c23f/images/L47230400/L47230400_0_G1.jpg", desc: "Doppio strato di Titanal. Un missile in pista e fuori." },
+{ brand: "Salomon", model: "Stance 84 W", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dwf8324832/images/L41134700/L41134700_0_G1.jpg", desc: "Versatile e intuitivo. Perfetto per esplorare tutta la montagna." },
+{ brand: "Salomon", model: "QST 106", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 750, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw8e9e1e3e/images/L41495000/L41495000_0_G1.jpg", desc: "Il re della neve fresca. Galleggiamento supremo e giocosità." },
+{ brand: "Salomon", model: "QST Spark", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "corto", mood: "comfort", price: 400, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw38294821/images/L41494400/L41494400_0_G1.jpg", desc: "Perfetto per i primi salti in park. Leggero e resistente." },
+
+// --- PACCHETTO K2 (ESPANSIONE) ---
+{ brand: "K2", model: "Mindbender 89Ti", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 720, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw4f883213/images/K2/Skis/A230300601_2324_K2_Mindbender_89Ti_Ski_A_Ti.jpg?sw=800", desc: "Grip incredibile sul duro, agile nelle gobbe." },
+{ brand: "K2", model: "Mindbender 99Ti W", gender: "donna", cat: "freeride", lvl: "avanzato", radius: "medio", mood: "performance", price: 720, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw11234123/images/K2/Skis/A230301101_2324_K2_Mindbender_99Ti_W_Ski_A_Ti.jpg?sw=800", desc: "Specifico donna. Potenza in freeride senza compromessi." },
+{ brand: "K2", model: "Reckoner 102", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw99887766/images/K2/Skis/A230300101_2324_K2_Reckoner_102_Ski_A_Ti.jpg?sw=800", desc: "Twin tip largo. Per fare trick in fresca e in pista." },
+{ brand: "K2", model: "Disruption 78C", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 500, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw55443322/images/K2/Skis/A230302001_2324_K2_Disruption_78C_Ski_A_Ti.jpg?sw=800", desc: "Carbon I-Beam. Leggero ma stabile per sciare tutto il giorno." },
+
+// --- PACCHETTO ARMADA (NUOVO!) ---
+{ brand: "Armada", model: "ARV 96", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://armadaskis.com/cdn/shop/products/RA0000438_ARV_96_A_1.png?v=1676654812", desc: "L'icona del freestyle all-mountain. Indistruttibile sui rail." },
+{ brand: "Armada", model: "ARV 106", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "medio", mood: "comfort", price: 700, img: "https://armadaskis.com/cdn/shop/products/RA0000440_ARV_106_A_1.png?v=1676654845", desc: "La scelta per il backcountry freestyle. Surfy e divertente." },
+{ brand: "Armada", model: "Declivity 92 Ti", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, img: "https://armadaskis.com/cdn/shop/products/RA0000454_Declivity_92_Ti_A_1.png?v=1676654921", desc: "Armada fa sul serio in pista. Veloce e tagliente." },
+{ brand: "Armada", model: "Reliance 88 C", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://armadaskis.com/cdn/shop/products/RA0000466_Reliance_88_C_A_1.png?v=1676654992", desc: "Leggero e facile. Ottimo per piste e boschetti." },
+
+// --- PACCHETTO FACTION (NUOVO!) ---
+{ brand: "Faction", model: "Prodigy 1", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "corto", mood: "performance", price: 500, img: "https://factionskis.com/cdn/shop/products/Faction_Skis_2324_Prodigy_1_Flat.png?v=1677685000", desc: "Park ski preciso. Pop esplosivo per salti e rail." },
+{ brand: "Faction", model: "Prodigy 2", gender: "unisex", cat: "freestyle", lvl: "avanzato", radius: "medio", mood: "comfort", price: 600, img: "https://factionskis.com/cdn/shop/products/Faction_Skis_2324_Prodigy_2_Flat.png?v=1677685000", desc: "Il best seller. All-mountain freestyle per saltare ovunque." },
+{ brand: "Faction", model: "Mana 2", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "medio", mood: "performance", price: 700, img: "https://factionskis.com/cdn/shop/products/Faction_Skis_2324_Mana_2_Flat.png?v=1677685000", desc: "Freeride twin tip. Stabile in atterraggio e veloce." },
+{ brand: "Faction", model: "Agent 3", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 750, img: "https://factionskis.com/cdn/shop/products/Faction_Skis_2324_Agent_3_Flat.png?v=1677685000", desc: "Leggero per risalire (touring) ma potente in discesa." },
+
+// --- PACCHETTO BLIZZARD (ESPANSIONE) ---
+{ brand: "Blizzard", model: "Rustler 10", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "medio", mood: "comfort", price: 700, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A228000001_RUSTLER_10_FLAT_1.jpg", desc: "Il freeride giocoso. Morbido in punta, solido sotto il piede." },
+{ brand: "Blizzard", model: "Rustler 9", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A228200001_RUSTLER_9_FLAT_1.jpg", desc: "Più stretto del 10, ottimo per chi fa 60% pista e 40% fuori." },
+{ brand: "Blizzard", model: "Sheeva 9", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A228600001_SHEEVA_9_FLAT_1.jpg", desc: "Specifico donna. Divertente e facile in ogni condizione." },
+{ brand: "Blizzard", model: "Firebird HRC", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 950, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A203200001_FIREBIRD_HRC_xcell_14_1.jpg", desc: "Multi-raggio in carbonio. Un rasoio sulla neve dura." },
+
+// --- PACCHETTO NORDICA (ESPANSIONE) ---
+{ brand: "Nordica", model: "Enforcer 100", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 780, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A133400001_ENFORCER_100_FLAT_1.jpg", desc: "Lo sci che ha definito il freeride moderno. Potente e piantato." },
+{ brand: "Nordica", model: "Enforcer 88", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 720, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A133800001_ENFORCER_88_FLAT_1.jpg", desc: "Il più stretto della famiglia. Carva come uno sci da gara." },
+{ brand: "Nordica", model: "Belle DC 78", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 500, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A125400001_BELLE_DC_78_TP2_LIGHT_11_FDT_1.jpg", desc: "Tecnologia Double Core. Morbido e divertente." },
+{ brand: "Nordica", model: "Unleashed 90", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 500, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A134600001_UNLEASHED_90_FLAT_1.jpg", desc: "Perfetto per giovani freestyler. Agile e leggero." },
+
+// --- PACCHETTO LINE (NUOVO!) ---
+{ brand: "Line", model: "Blade Optic 96", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 700, img: "https://lineskis.com/cdn/shop/products/A1400016_Blade_Optic_96_A_1.png?v=1676654000", desc: "Metallo 'Gas Pedal'. Accelera in uscita curva come un matto." },
+{ brand: "Line", model: "Tom Wallisch Pro", gender: "unisex", cat: "freestyle", lvl: "avanzato", radius: "medio", mood: "performance", price: 600, img: "https://lineskis.com/cdn/shop/products/A1400021_Tom_Wallisch_Pro_A_1.png?v=1676654000", desc: "Lo sci del maestro dei rail. Indistruttibile e scattante." },
+{ brand: "Line", model: "Honey Badger", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 400, img: "https://lineskis.com/cdn/shop/products/A1400022_Honey_Badger_A_1.png?v=1676654000", desc: "Economico e robusto. Perfetto per street e park." },
+{ brand: "Line", model: "Bacon 108", gender: "unisex", cat: "freestyle", lvl: "avanzato", radius: "medio", mood: "comfort", price: 750, img: "https://lineskis.com/cdn/shop/products/A1400013_Bacon_108_A_1.png?v=1676654000", desc: "Il Sir Francis Bacon rinnovato. Galleggia e fa trick ovunque." },
+
+// --- PACCHETTO STOCKLI (LUSSO) ---
+{ brand: "Stockli", model: "Laser SC", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 1300, img: "https://www.stoeckli.ch/cdn/shop/files/Ski_Laser_SC_Orea_2023_24_Front_1000x1000.png?v=1685600000", desc: "L'eccellenza svizzera. Precisione e fluidità inarrivabili." },
+{ brand: "Stockli", model: "Laser GS", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "lungo", mood: "performance", price: 1400, img: "https://www.stoeckli.ch/cdn/shop/files/Ski_Laser_GS_2023_24_Front_1000x1000.png?v=1685600000", desc: "Come guidare una Rolls Royce a 100km/h. Stabilità totale." },
+{ brand: "Stockli", model: "Stormrider 95", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 1200, img: "https://www.stoeckli.ch/cdn/shop/files/Ski_Stormrider_95_2023_24_Front_1000x1000.png?v=1685600000", desc: "Freeride di lusso. Titanal spazzolato e finiture artigianali." },
+{ brand: "Stockli", model: "Montero AX", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 1250, img: "https://www.stoeckli.ch/cdn/shop/files/Ski_Montero_AX_2023_24_Front_1000x1000.png?v=1685600000", desc: "All mountain versatile. Divertente e facile nonostante la potenza." },
+
+// --- PACCHETTO DYNASTAR (NUOVO!) ---
+{ brand: "Dynastar", model: "M-Pro 99", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 780, img: "https://www.dynastar.com/media/catalog/product/d/a/dalm001_m-pro_99_main_v1.jpg", desc: "Direzionale e veloce. Per chi carica forte in campo aperto." },
+{ brand: "Dynastar", model: "M-Free 99", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, img: "https://www.dynastar.com/media/catalog/product/d/a/dalm003_m-free_99_main_v1.jpg", desc: "Twin tip progressivo. Agile tra gli alberi e divertente." },
+{ brand: "Dynastar", model: "Speed Course Master GS", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "lungo", mood: "performance", price: 1000, img: "https://www.dynastar.com/media/catalog/product/d/a/dalb001_speed_course_master_gs_konect_main_v1.jpg", desc: "Sensazione gara ma raggio più umano. Contatto neve pazzesco." },
+{ brand: "Dynastar", model: "E-Lite 7", gender: "donna", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, img: "https://www.dynastar.com/media/catalog/product/d/a/dald002_e_lite_7_xpres_main_v1.jpg", desc: "Leggero e performante. Ottimo per sciare in relax." },
+
+// --- PACCHETTO ELAN (NUOVO!) ---
+{ brand: "Elan", model: "Ripstick 96", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "comfort", price: 750, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhgz23_ripstick_96_black_edition_1.jpg", desc: "Asimmetrico (Destro/Sinistro). Facilissimo da girare." },
+{ brand: "Elan", model: "Wingman 86 Ti", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhsd23_wingman_86_ti_fusion_x_1.jpg", desc: "Carving potente con larghezza extra per stabilità." },
+{ brand: "Elan", model: "Primetime 55", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 900, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhsb23_primetime_55_fusion_x_1.jpg", desc: "Nuova tecnologia PowerMatch. Tenuta spigolo immediata." },
+{ brand: "Elan", model: "Wildcat 82 C", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/acjhze23_wildcat_82_c_ps_1.jpg", desc: "Carbonio per leggerezza. Ottimo su nevi morbide." },
+// --- PACCHETTO BLACK CROWS (CULT) ---
+{ brand: "Black Crows", model: "Camox", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 720, img: "https://www.black-crows.com/on/demandware.static/-/Sites-blackcrows-master-catalog/default/dw2b3b3b3b/images/products/skis/camox/camox_1.png", desc: "Il re del mid-fat. Doppio rocker, facilissimo da girare e stiloso." },
+{ brand: "Black Crows", model: "Serpo", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, img: "https://www.black-crows.com/on/demandware.static/-/Sites-blackcrows-master-catalog/default/dw4c4c4c4c/images/products/skis/serpo/serpo_1.png", desc: "Un all-terrain che ama carvare in pista. Strato di metallo per tenuta." },
+{ brand: "Black Crows", model: "Atris", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 820, img: "https://www.black-crows.com/on/demandware.static/-/Sites-blackcrows-master-catalog/default/dw5d5d5d5d/images/products/skis/atris/atris_1.png", desc: "Big Mountain accessibile. Stabile in velocità, galleggia ovunque." },
+{ brand: "Black Crows", model: "Mirus Cor", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 900, img: "https://www.black-crows.com/on/demandware.static/-/Sites-blackcrows-master-catalog/default/dw6e6e6e6e/images/products/skis/mirus/mirus_1.png", desc: "Coda di rondine, raggio cortissimo. Lo sci più divertente per carvare." },
+{ brand: "Black Crows", model: "Captis Birdie", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, img: "https://www.black-crows.com/on/demandware.static/-/Sites-blackcrows-master-catalog/default/dw7f7f7f7f/images/products/skis/captis-birdie/captis_birdie_1.png", desc: "Versione donna. Agile, veloce da bordo a bordo e molto tollerante." },
+{ brand: "Black Crows", model: "Nocta", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 950, img: "https://www.black-crows.com/on/demandware.static/-/Sites-blackcrows-master-catalog/default/dw8a8a8a8a/images/products/skis/nocta/nocta_1.png", desc: "Full rocker. Galleggiamento infinito per giornate epiche." },
+
+// --- PACCHETTO VÖLKL (AGGIORNAMENTO 2025/26) ---
+{ brand: "Volkl", model: "Peregrine 82", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 900, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/124111_peregrine_82_flat_1.jpg", desc: "Il successore del Deacon. Basso profilo, ghiaccio o neve molle non importa." },
+{ brand: "Volkl", model: "Peregrine 72", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 950, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/124101_peregrine_72_flat_1.jpg", desc: "Aggressivo e veloce. Cambio spigolo istantaneo." },
+{ brand: "Volkl", model: "Revolt 90", gender: "unisex", cat: "freestyle", lvl: "avanzato", radius: "medio", mood: "performance", price: 650, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122442_revolt_90_flat_1_1.jpg", desc: "Sci da Slopestyle pro. Calibrato per salti enormi." },
+{ brand: "Volkl", model: "Revolt 104", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 700, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122444_revolt_104_flat_1_1.jpg", desc: "Freestyle backcountry. Divertente per fare trick in fresca." },
+{ brand: "Volkl", model: "Blaze 94", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122426_blaze_94_flat_1_1.jpg", desc: "Leggerissimo. Ottimo ibrido per pista e scialpinismo." },
+{ brand: "Volkl", model: "Yumi 84", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122416_yumi_84_flat_1_1.jpg", desc: "Facile da manovrare, stabile quanto basta. Best seller." },
+
+// --- PACCHETTO KÄSTLE (PREMIUM) ---
+{ brand: "Kastle", model: "MX83", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 1100, img: "https://www.kaestle.com/fileadmin/_processed_/8/c/csm_MX83_2324_e1a8b9e6c4.png", desc: "Sensazione alpina classica. Stabilità e silenziosità austriaca." },
+{ brand: "Kastle", model: "DX73", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 600, img: "https://www.kaestle.com/fileadmin/_processed_/a/1/csm_DX73_W_2324_8b8e8b8e8b.png", desc: "Hollowtech in punta. Leggero, facile ingresso curva." },
+{ brand: "Kastle", model: "ZX108", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 850, img: "https://www.kaestle.com/fileadmin/_processed_/2/3/csm_ZX108_2324_9c9c9c9c9c.png", desc: "Drifter nato. Surfoso e robusto per linee impegnative." },
+{ brand: "Kastle", model: "RX12 SL", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 1200, img: "https://www.kaestle.com/fileadmin/_processed_/5/6/csm_RX12_SL_2324_7d7d7d7d7d.png", desc: "Slalom World Cup replica. Solo per gambe allenate." },
+
+// --- PACCHETTO DPS (LUSSO FREERIDE) ---
+{ brand: "DPS", model: "Kaizen 100", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "medio", mood: "comfort", price: 1300, img: "https://www.dpsskis.com/cdn/shop/files/Kaizen100_Front_2000x.png?v=1691684521", desc: "Carbonio aerospaziale. Costoso ma unico." },
+{ brand: "DPS", model: "Pagoda Piste 90", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 1250, img: "https://www.dpsskis.com/cdn/shop/products/Pagoda_90_RP_Front_2000x.png?v=1629912345", desc: "Come guidare una Ferrari. Risposta elastica incredibile." },
+{ brand: "DPS", model: "Kaizen 112", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "corto", mood: "comfort", price: 1350, img: "https://www.dpsskis.com/cdn/shop/files/Kaizen112_Front_2000x.png?v=1691684600", desc: "La forma RP leggendaria. Raggio corto (15m) su sci larghissimo." },
+
+// --- PACCHETTO HEAD (ESPANSIONE) ---
+{ brand: "Head", model: "Kore 105", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 850, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315423_kore_105_base_1.jpg", desc: "Rigido e leggerissimo. Non sbatte in velocità." },
+{ brand: "Head", model: "Kore 93", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315433_kore_93_base_1.jpg", desc: "Il tuttofare rigido. Ottimo anche da pellare." },
+{ brand: "Head", model: "Power Joy", gender: "donna", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315613_power_joy_joy_12_gw_base_1.jpg", desc: "Uno sci race da uomo travestito da sci donna. Potente." },
+{ brand: "Head", model: "Oblivion 84", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 450, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315533_oblivion_84_base_1.jpg", desc: "Resistente e pop facile. Ideale per imparare park." },
+{ brand: "Head", model: "Shape e-V8", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 600, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315223_shape_e-v8_pr_11_gw_base_1.jpg", desc: "Larghezza extra in punta per entrare in curva col pensiero." },
+
+// --- PACCHETTO SCOTT & MOVEMENT (SVIZZERA) ---
+{ brand: "Scott", model: "Pure Mission 98Ti", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 750, img: "https://images.scott-sports.com/2024/products/280654/280654_000_207797.png", desc: "Sci da big mountain serio. Titane e legno." },
+{ brand: "Scott", model: "Slight 83", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://images.scott-sports.com/2023/products/276336/276336_000_187654.jpg", desc: "Crossover pista/skialp. Leggerissimo." },
+{ brand: "Movement", model: "Go 106", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 800, img: "https://www.movementskis.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/g/o/go_106_ti_2.png", desc: "Freeride moderno svizzero. Tenuta eccezionale." },
+{ brand: "Movement", model: "Fly 105", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, img: "https://www.movementskis.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/f/l/fly_105_2.png", desc: "Lo sci del team Movement. Stiloso e morbido." },
+{ brand: "Movement", model: "Icon 89", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://www.movementskis.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/c/icon_89_2.png", desc: "Versatilità pura in ogni condizione." },
+
+// --- PACCHETTO ARMADA & FACTION (EXTRA) ---
+{ brand: "Armada", model: "Stranger", gender: "unisex", cat: "freestyle", lvl: "avanzato", radius: "corto", mood: "comfort", price: 700, img: "https://armadaskis.com/cdn/shop/products/RA0000448_Stranger_A_1.png?v=1676654898", desc: "Unico nel suo genere. Carva stretto (15m) ma largo 100mm. Funky." },
+{ brand: "Faction", model: "Dancer 2", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, img: "https://factionskis.com/cdn/shop/products/Faction_Skis_2324_Dancer_2_Flat.png?v=1677685000", desc: "Due fogli di metallo. Per chi vuole correre fuori pista." },
+{ brand: "Faction", model: "Prodigy 0", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 400, img: "https://factionskis.com/cdn/shop/products/Faction_Skis_2324_Prodigy_0_Flat.png?v=1677685000", desc: "Il punto di ingresso per il freestyle. Economico e robusto." },
+
+// --- PACCHETTO ATOMIC (BENT FAMILY COMPLETA) ---
+{ brand: "Atomic", model: "Bent 110", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "medio", mood: "comfort", price: 750, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h9e/ha2/9960579891230/AA0029566_1_Bent_110.png_rendition_3000_3000.jpg", desc: "Il ponte tra il 100 e il 120. Freestyle backcountry perfetto." },
+{ brand: "Atomic", model: "Bent 90", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/hce/h6e/9960577761310/AA0029558_1_Bent_90.png_rendition_3000_3000.jpg", desc: "Più stretto per il park, ma capace di girare ovunque." },
+{ brand: "Atomic", model: "Bent 85", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 450, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h67/h3e/9960576614430/AA0029556_1_Bent_85.png_rendition_3000_3000.jpg", desc: "Economico, senza fianco laterale pesante. Resistente." },
+// --- PACCHETTO WEDZE (DECATHLON - BEST BUDGET) ---
+{ brand: "Wedze", model: "Boost 500", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 350, img: "https://contents.mediadecathlon.com/p2057393/k$550f2497672589508056255152504996/sq/sci-pista-uomo-boost-500-verde.jpg", desc: "Il re del risparmio. Anima in legno e fianco dritto a un prezzo imbattibile." },
+{ brand: "Wedze", model: "Cross 550", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 380, img: "https://contents.mediadecathlon.com/p2057530/k$e2b02706346766956277649516644280/sq/sci-all-mountain-uomo-cross-550-neri.jpg", desc: "Largo 78mm sotto il piede. Ottimo per piste rovinate e neve primaverile." },
+{ brand: "Wedze", model: "Boost 100", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 220, img: "https://contents.mediadecathlon.com/p1663189/k$5d601556274041118167665715875880/sq/sci-pista-adulto-boost-100-bianchi.jpg", desc: "Lo sci per imparare. Facilissimo, perdona ogni errore." },
+{ brand: "Wedze", model: "Cross 150", gender: "donna", cat: "allmountain", lvl: "principiante", radius: "medio", mood: "comfort", price: 250, img: "https://contents.mediadecathlon.com/p2253818/k$65066487143499444458882585250665/sq/sci-all-mountain-donna-cross-150-bianchi.jpg", desc: "Leggero e maneggevole. Ideale per le prime curve a sci paralleli." },
+{ brand: "Wedze", model: "Freeride 900", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 450, img: "https://contents.mediadecathlon.com/p1931846/k$8c558668940845579848564175510651/sq/sci-freeride-patrol-95-pelle-di-foca.jpg", desc: "Non ha nulla da invidiare ai marchi blasonati. Potente e galleggiante." },
+
+// --- PACCHETTO ELAN (OTTIMO RAPPORTO QUALITÀ/PREZZO) ---
+{ brand: "Elan", model: "Element Green", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 400, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhqn23_element_green_ls_1.jpg", desc: "Tecnologia Groove. Flette uniformemente per aiutarti a chiudere la curva." },
+{ brand: "Elan", model: "Wildcat 76", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 450, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/c/acjhzj23_wildcat_76_ls_1.jpg", desc: "Leggerissimo. Perfetto per donne che vogliono migliorare senza fatica." },
+{ brand: "Elan", model: "Primetime 22", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "performance", price: 500, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhrz23_primetime_22_red_ps_1.jpg", desc: "Carving accessibile. Ti fa sentire un esperto anche se non lo sei." },
+{ brand: "Elan", model: "Explore 6", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 350, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhrm23_explore_6_green_ls_1.jpg", desc: "Il primo sci. Prezzo basso, divertimento alto." },
+{ brand: "Elan", model: "Playmaker 91", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 480, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/d/adjjkf23_playmaker_91_1.jpg", desc: "Freestyle all-mountain economico e robusto. Twin tip." },
+
+// --- PACCHETTO ROSSIGNOL (ENTRY LEVEL) ---
+{ brand: "Rossignol", model: "Experience 76", gender: "unisex", cat: "allmountain", lvl: "principiante", radius: "medio", mood: "comfort", price: 400, img: "https://www.rossignol.com/media/catalog/product/r/a/ralez01_experience_76_xpress_main_v1.jpg", desc: "Facile, sicuro e versatile. Per iniziare l'avventura all-mountain." },
+{ brand: "Rossignol", model: "Experience 78 Carbon", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 500, img: "https://www.rossignol.com/media/catalog/product/r/a/ralev01_experience_78_carbon_xpress_main_v1.jpg", desc: "Rinforzo in carbonio per più stabilità senza peso aggiuntivo." },
+{ brand: "Rossignol", model: "Nova 2", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 350, img: "https://www.rossignol.com/media/catalog/product/r/a/ralle05_nova_2_xpress_main_v1.jpg", desc: "Design elegante e facilità assoluta. Il miglior primo sci donna." },
+{ brand: "Rossignol", model: "React 2", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 350, img: "https://www.rossignol.com/media/catalog/product/r/a/ralll03_react_2_xpress_main_v1.jpg", desc: "Tecnologia Flex Tip. La spatola lavora per te in curva." },
+{ brand: "Rossignol", model: "Sender 90 Pro", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 450, img: "https://www.rossignol.com/media/catalog/product/r/a/ralmq01_sender_90_pro_xpress_main_v1.jpg", desc: "Freeride accessibile. Anima in legno e cap construction resistente." },
+
+// --- PACCHETTO NORDICA (SMART BUY) ---
+{ brand: "Nordica", model: "Spitfire Prime", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 380, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A124800001_DOBERMANN_SPITFIRE_70_TI_FDT_1.jpg", desc: "DNA sportivo ma addolcito. Ottimo per imparare la tecnica carving." },
+{ brand: "Nordica", model: "Navigator 75", gender: "unisex", cat: "allmountain", lvl: "principiante", radius: "medio", mood: "comfort", price: 350, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A914400001_NAVIGATOR_75_CA_FDT_1.jpg", desc: "Stabile e prevedibile. La scelta sicura per chi inizia." },
+{ brand: "Nordica", model: "Belle 72", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 380, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A125800001_BELLE_72_CA_FDT_1.jpg", desc: "Specifico donna. Anima leggera e posizione avanzata per controllo." },
+{ brand: "Nordica", model: "Unleashed 90", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 450, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A134600001_UNLEASHED_90_FLAT_1.jpg", desc: "Twin tip economico. Divertente in pista e in park." },
+
+// --- PACCHETTO SALOMON (BUDGET) ---
+{ brand: "Salomon", model: "S/Force 7", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 420, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dwc6265738/images/L41172100/L41172100_0_G1.jpg", desc: "Stabile anche se la pista non è perfetta. Spatola larga." },
+{ brand: "Salomon", model: "Stance 80", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 480, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw18544521/images/L47000200/L47000200_0_G1.jpg", desc: "Struttura Carbon Powered. Accessibile ma performante." },
+{ brand: "Salomon", model: "S/Max 6", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 380, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw8374828f/images/L47355100/L47355100_0_G1.jpg", desc: "Il fratello minore del S/Max 10. Più morbido e tollerante." },
+{ brand: "Salomon", model: "QST Spark", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "corto", mood: "comfort", price: 350, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw38294821/images/L41494400/L41494400_0_G1.jpg", desc: "Park ski indistruttibile ed economico." },
+{ brand: "Salomon", model: "Aira 76", gender: "donna", cat: "allmountain", lvl: "principiante", radius: "medio", mood: "comfort", price: 350, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dwf8324832/images/L41134700/L41134700_0_G1.jpg", desc: "Semplicissimo. Ti fa sentire sicura fin dalla prima curva." },
+
+// --- PACCHETTO ATOMIC (ENTRY) ---
+{ brand: "Atomic", model: "Redster TR", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "performance", price: 450, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h7d/h9e/9960536408094/AA0029532_1_Redster_S9_Revoshock_S_X_12_GW_Grey.png_rendition_3000_3000.jpg", desc: "Ingresso nel mondo race. Agile ma non spacca le gambe." },
+{ brand: "Atomic", model: "Cloud Q8", gender: "donna", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 400, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h47/hfb/9960551743518/AA0029554_1_Cloud_C12_Revoshock_C_M_10_GW_Black.png_rendition_3000_3000.jpg", desc: "Largo 75mm al centro. Stabile anche su neve smossa." },
+{ brand: "Atomic", model: "Maverick 83", gender: "unisex", cat: "allmountain", lvl: "principiante", radius: "medio", mood: "comfort", price: 400, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/he0/h07/9960586936350/AA0029580_1_Maverick_95_TI.png_rendition_3000_3000.jpg", desc: "Anima in composito OMatic. Leggero e facile da girare." },
+{ brand: "Atomic", model: "Bent 85", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 380, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h67/h3e/9960576614430/AA0029556_1_Bent_85.png_rendition_3000_3000.jpg", desc: "Freestyle economico e stiloso. Grafiche top." },
+
+// --- PACCHETTO K2 (EASY RIDE) ---
+{ brand: "K2", model: "Disruption 76", gender: "unisex", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 350, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw55443322/images/K2/Skis/A230302001_2324_K2_Disruption_78C_Ski_A_Ti.jpg?sw=800", desc: "Catch Free Rocker. Impossibile spigolare per sbaglio." },
+{ brand: "K2", model: "Disruption 78C", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "performance", price: 480, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw55443322/images/K2/Skis/A230302001_2324_K2_Disruption_78C_Ski_A_Ti.jpg?sw=800", desc: "Versione in carbonio. Più reattiva ma sempre leggera." },
+{ brand: "K2", model: "Mindbender 85", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 450, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw4f883213/images/K2/Skis/A230300601_2324_K2_Mindbender_89Ti_Ski_A_Ti.jpg?sw=800", desc: "Freeride entry level. Semplice, anima in legno, divertente." },
+{ brand: "K2", model: "Reckoner 92", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 400, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw99887766/images/K2/Skis/A230300101_2324_K2_Reckoner_102_Ski_A_Ti.jpg?sw=800", desc: "All-Twin Rocker. Per imparare a sciare all'indietro (switch)." },
+
+// --- PACCHETTO BLIZZARD (VALUE) ---
+{ brand: "Blizzard", model: "Stormbird 76 X", gender: "unisex", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 300, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A105400001_THUNDERBIRD_R15_WB_LTD_xcell_12_1.jpg", desc: "Incredibilmente facile. Si gira con il pensiero." },
+{ brand: "Blizzard", model: "Elevate 72", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 320, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A228600001_SHEEVA_9_FLAT_1.jpg", desc: "Leggero e stabile. Progettato per donne che iniziano." },
+{ brand: "Blizzard", model: "Phoenix 7.2", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 400, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A228600001_SHEEVA_9_FLAT_1.jpg", desc: "Versatile per piste battute o leggermente rovinate." },
+
+// --- PACCHETTO VOLKL (GERMAN QUALITY ENTRY) ---
+{ brand: "Volkl", model: "Deacon 7.2", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 350, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/124111_peregrine_82_flat_1.jpg", desc: "Il classico sci da noleggio/apprendimento. Robusto e facile." },
+{ brand: "Volkl", model: "Flair 72", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 350, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122416_yumi_84_flat_1_1.jpg", desc: "Sistema vMotion leggero. Presa di spigolo sicura." },
+{ brand: "Volkl", model: "Bash 81", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 300, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122442_revolt_90_flat_1_1.jpg", desc: "Twin tip entry level. Ottimo prezzo per iniziare il park." },
+
+// --- PACCHETTO HEAD (EASY) ---
+{ brand: "Head", model: "Shape 3.0", gender: "unisex", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 300, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315223_shape_e-v8_pr_11_gw_base_1.jpg", desc: "Era 3.0 Technology. Rocker, raggio e reattività bilanciati per imparare." },
+{ brand: "Head", model: "Pure Joy", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 350, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315603_super_joy_joy_slr_pro_base_1.jpg", desc: "Specifico donna. Colore elegante, facilità estrema." },
+
+// --- PACCHETTO ATOMIC (BACKLAND & Q-SERIES) ---
+{ brand: "Atomic", model: "Backland 107", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 750, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h70/h55/9960588640286/AA0029570_1_Backland_107.png_rendition_3000_3000.jpg", desc: "Leggerissimo (Carbon Backbone). Nato per il touring, scende come un freeride." },
+{ brand: "Atomic", model: "Redster Q9.8", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 1000, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h03/h68/9960541782046/AA0029536_1_Redster_Q9_8_Revoshock_S_X_12_GW_Black.png_rendition_3000_3000.jpg", desc: "Sci da pista largo (Wide Body). Stabilità totale anche su neve molle primaverile." },
+{ brand: "Atomic", model: "Backland 85 W", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/hc3/h18/9960592965662/AA0029576_1_Backland_85_W.png_rendition_3000_3000.jpg", desc: "Specifico donna per touring/all-mountain. Leggero come una piuma." },
+{ brand: "Atomic", model: "Bent 100", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h9b/h8b/9960578678814/AA0029562_1_Bent_100.png_rendition_3000_3000.jpg", desc: "Il tuttofare. Park, fresca, pista. Lo sci unico per eccellenza." },
+
+// --- PACCHETTO VOLKL (FREERIDE & TOURING) ---
+{ brand: "Volkl", model: "Mantra 102", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 880, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122143_mantra_102_flat_1_1.jpg", desc: "Il fratello maggiore del M6. Un carro armato per nevi profonde." },
+{ brand: "Volkl", model: "Rise Beyond 96", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122370_rise_beyond_96_flat_1_1.jpg", desc: "Anima in legno Tourlite. Galleggia bene, fatica zero in salita." },
+{ brand: "Volkl", model: "Revolt 121", gender: "unisex", cat: "freestyle", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 750, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122446_revolt_121_flat_1_1.jpg", desc: "Lo sci di Markus Eder. Butter, salti e trick in neve profondissima." },
+{ brand: "Volkl", model: "Kendo 88", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122142_kendo_88_flat_1_1.jpg", desc: "Precisione da sci da pista con la versatilità del fuoripista." },
+
+// --- PACCHETTO DYNAFIT (NEW ENTRY - TOURING MAPPATO FREERIDE) ---
+{ brand: "Dynafit", model: "Radical 88", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, img: "https://www.dynafit.com/media/image/58/06/f0/08-0000048990_0911_08-0000048990_0911_5828.jpg", desc: "Un classico dello scialpinismo. Facile, intuitivo e robusto." },
+{ brand: "Dynafit", model: "Free 97", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "medio", mood: "performance", price: 700, img: "https://www.dynafit.com/media/image/24/76/01/08-0000048992_8961_08-0000048992_8961.jpg", desc: "Free Touring giocoso. Agile e divertente in discesa." },
+{ brand: "Dynafit", model: "Blacklight 88", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, img: "https://www.dynafit.com/media/image/4a/0f/01/08-0000048986_0912_08-0000048986_0912.jpg", desc: "Carbonio puro. Rigidissimo e leggerissimo. Solo per esperti." },
+{ brand: "Dynafit", model: "Seven Summits", gender: "unisex", cat: "allmountain", lvl: "principiante", radius: "medio", mood: "comfort", price: 450, img: "https://www.dynafit.com/media/image/62/e0/75/08-0000048994_4351_08-0000048994_4351.jpg", desc: "Lo sci ideale per iniziare a pellare e uscire dalle piste." },
+
+// --- PACCHETTO LINE (FUN & WEIRD) ---
+{ brand: "Line", model: "Blade", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "comfort", price: 800, img: "https://lineskis.com/cdn/shop/products/A1400015_Blade_A_1.png?v=1676654000", desc: "Forma assurda: punta larghissima, raggio cortissimo. Carva come un matto." },
+{ brand: "Line", model: "Pandora 84", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 500, img: "https://lineskis.com/cdn/shop/products/A1400020_Pandora_84_A_1.png?v=1676654000", desc: "Leggero e agile. Ottimo grip su pista, facile nel bosco." },
+{ brand: "Line", model: "Sakana", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "corto", mood: "comfort", price: 850, img: "https://lineskis.com/cdn/shop/products/A1400014_Sakana_A_1.png?v=1676654000", desc: "Coda di rondine. Galleggia in fresca ma carva in pista. Unico." },
+{ brand: "Line", model: "Blend", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://lineskis.com/cdn/shop/products/A1400019_Blend_A_1.png?v=1676654000", desc: "Lo sci più morbido del mercato. Butter e press facili." },
+
+// --- PACCHETTO ROSSIGNOL (BLACKOPS) ---
+{ brand: "Rossignol", model: "Blackops Sender Squad", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 850, img: "https://www.rossignol.com/media/catalog/product/r/a/ralmj01_sender_squad_open_main_v1.jpg", desc: "Sci da gara per la neve fresca. Rigidissimo e veloce." },
+{ brand: "Rossignol", model: "Blackops 92", gender: "unisex", cat: "allmountain", lvl: "principiante", radius: "medio", mood: "comfort", price: 450, img: "https://www.rossignol.com/media/catalog/product/r/a/ralmp01_blackops_92_open_main_v1.jpg", desc: "Largo ma accessibile. Perfetto primo sci largo." },
+{ brand: "Rossignol", model: "React 10 Ti", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, img: "https://www.rossignol.com/media/catalog/product/r/a/rallh01_react_10_ti_konect_main_v1.jpg", desc: "Potenza accessibile. Flex Tip per entrare in curva facile." },
+
+// --- PACCHETTO ZAG (CHAMONIX STYLE) ---
+{ brand: "Zag", model: "Slap 104", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "medio", mood: "comfort", price: 750, img: "https://www.zagskis.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/s/l/slap-104-nu.png", desc: "Leggero, giocoso e polivalente. Un must a Chamonix." },
+{ brand: "Zag", model: "Harfang 96", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 700, img: "https://www.zagskis.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/h/a/harfang-96-nu.png", desc: "Pista e bordopista. Tallone piatto per chiusura curva potente." },
+{ brand: "Zag", model: "Slap 112", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 800, img: "https://www.zagskis.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/s/l/slap-112-nu.png", desc: "Arma da powder. Galleggiamento istantaneo." },
+
+// --- PACCHETTO FISCHER (RANGER & RC ONE) ---
+{ brand: "Fischer", model: "Ranger 90", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://www.fischersports.com/media/image/0a/68/7c/P15522_Ranger_90_Front.jpg", desc: "Stabile e sicuro. Ottimo intaglio in pista grazie al metallo." },
+{ brand: "Fischer", model: "RC One 86 GT", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, img: "https://www.fischersports.com/media/image/22/58/5c/P05021_RC_One_86_GT_Multiflex_Front.jpg", desc: "Sci da pista largo e potente. Non teme la neve molle." },
+{ brand: "Fischer", model: "Ranger 108", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 750, img: "https://www.fischersports.com/media/image/5b/18/8c/P16222_Ranger_108_Front.jpg", desc: "Freeride puro. Coda piatta per stabilità e velocità." },
+
+// --- PACCHETTO BLIZZARD (ZERO G & HUSTLE) ---
+{ brand: "Blizzard", model: "Hustle 10", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 700, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A229200001_HUSTLE_10_FLAT_1.jpg", desc: "Un Rustler più leggero. Perfetto per pellare o freeride non faticoso." },
+{ brand: "Blizzard", model: "Hustle 9", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A229400001_HUSTLE_9_FLAT_1.jpg", desc: "Versatile, divertente e leggero. Trueblend Woodcore." },
+{ brand: "Blizzard", model: "Zero G 95", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "performance", price: 800, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A227000001_ZERO_G_095_FLAT_1.jpg", desc: "Il riferimento dello scialpinismo. Discesa tecnica e precisa." },
+{ brand: "Blizzard", model: "Phoenix R13", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "performance", price: 550, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A210200001_PHOENIX_R13_Ca_TPX_11_DEMO_1.jpg", desc: "Anima in legno Trueblend specifica donna. Divertente e reattivo." },
+
+// --- PACCHETTO K2 (WAYBACK & WOMEN) ---
+{ brand: "K2", model: "Wayback 96", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 650, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw12345678/images/K2/Skis/A230303201_2324_K2_Wayback_96_Ski_A_Ti.jpg?sw=800", desc: "Sci da touring leggendario. Affidabile in ogni condizione." },
+{ brand: "K2", model: "Midnight", gender: "donna", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 450, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw87654321/images/K2/Skis/A230301701_2324_K2_Midnight_Ski_A_Ti.jpg?sw=800", desc: "Specifico park donna. Carbon Boost Braid per pop extra." },
+{ brand: "K2", model: "Reckoner 112", gender: "unisex", cat: "freestyle", lvl: "avanzato", radius: "medio", mood: "comfort", price: 700, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw11223344/images/K2/Skis/A230300201_2324_K2_Reckoner_112_Ski_A_Ti.jpg?sw=800", desc: "Freestyle powder ski. Morbidissimo per butter e slash." },
+
+// --- PACCHETTO ROXY & FACTION (WOMEN & PARK) ---
+{ brand: "Roxy", model: "Shima 90", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 500, img: "https://cdn.roxy-europe.com/media/catalog/product/cache/image/1000x1000/9df78eab33525d08d6e5fb8d27136e95/r/o/roxy_shima_90_skis_2024.jpg", desc: "All-mountain freestyle donna. Divertente e grafico." },
+{ brand: "Faction", model: "Prodigy 0X", gender: "donna", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 400, img: "https://factionskis.com/cdn/shop/products/Faction_Skis_2324_Prodigy_0X_Flat.png?v=1677685000", desc: "Entry level park donna. Robusto e facile." },
+{ brand: "Faction", model: "Mana 2X", gender: "donna", cat: "freeride", lvl: "avanzato", radius: "medio", mood: "performance", price: 700, img: "https://factionskis.com/cdn/shop/products/Faction_Skis_2324_Mana_2X_Flat.png?v=1677685000", desc: "Premium twin tip donna. Leggero e reattivo." },
+
+// --- PACCHETTO WEDZE (IL RE DEL LOW COST) ---
+{ brand: "Wedze", model: "Boost 900", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 450, img: "https://contents.mediadecathlon.com/p2057393/k$550f2497672589508056255152504996/sq/sci-pista-uomo-boost-900.jpg", desc: "Top di gamma Decathlon. Prestazioni da sci di marca a metà prezzo." },
+{ brand: "Wedze", model: "Cross 950", gender: "unisex", cat: "allmountain", lvl: "avanzato", radius: "medio", mood: "performance", price: 480, img: "https://contents.mediadecathlon.com/p2057530/k$e2b02706346766956277649516644280/sq/sci-all-mountain-uomo-cross-950.jpg", desc: "Potente e stabile. Ottimo per chi vuole spendere poco ma sciare forte." },
+{ brand: "Wedze", model: "Fit 150", gender: "unisex", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 190, img: "https://contents.mediadecathlon.com/p1663189/k$5d601556274041118167665715875880/sq/sci-pista-adulto-fit-150.jpg", desc: "Il prezzo più basso del mercato. Per chi mette gli sci la prima volta." },
+{ brand: "Wedze", model: "Adix 500", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 280, img: "https://contents.mediadecathlon.com/p2253818/k$65066487143499444458882585250665/sq/sci-pista-donna-adix-500.jpg", desc: "Sci da donna semplice, leggero e graficamente curato. Best seller." },
+{ brand: "Wedze", model: "Patrol 95", gender: "unisex", cat: "freeride", lvl: "avanzato", radius: "lungo", mood: "comfort", price: 400, img: "https://contents.mediadecathlon.com/p1931846/k$8c558668940845579848564175510651/sq/sci-freeride-patrol-95.jpg", desc: "Freeride serio a un prezzo ridicolo. Robusto e galleggiante." },
+
+// --- PACCHETTO ROSSIGNOL (EASY SERIES) ---
+{ brand: "Rossignol", model: "React 4 CA", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 400, img: "https://www.rossignol.com/media/catalog/product/r/a/ralll03_react_4_xpress_main_v1.jpg", desc: "Rinforzo in carbonio (CA). Più scattante del modello base." },
+{ brand: "Rossignol", model: "Experience W 76", gender: "donna", cat: "allmountain", lvl: "principiante", radius: "medio", mood: "comfort", price: 380, img: "https://www.rossignol.com/media/catalog/product/r/a/ralez03_experience_w_76_xpress_main_v1.jpg", desc: "Il punto di ingresso All-Mountain per donne. Sicurezza totale." },
+{ brand: "Rossignol", model: "Nova 4 Ca", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 420, img: "https://www.rossignol.com/media/catalog/product/r/a/ralld03_nova_4_ca_xpress_main_v1.jpg", desc: "Elegante e facile. Il carbonio aiuta a tenere la linea senza stancare." },
+{ brand: "Rossignol", model: "Sprayer", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 300, img: "https://www.rossignol.com/media/catalog/product/r/a/ralmp02_sprayer_xpress_main_v1.jpg", desc: "Lo sci twin-tip più economico. Per ragazzi che iniziano il park." },
+
+// --- PACCHETTO HEAD (SHAPE & JOY) ---
+{ brand: "Head", model: "Shape V2", gender: "unisex", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 320, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315253_shape_v2_pr_11_gw_base_1.jpg", desc: "Leggero e largo in punta per facilitare l'ingresso curva." },
+{ brand: "Head", model: "Shape V4", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 450, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315243_shape_v4_pr_11_gw_base_1.jpg", desc: "Più strutturato del V2. Per chi inizia a prendere velocità." },
+{ brand: "Head", model: "Real Joy", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 450, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315623_real_joy_joy_9_gw_base_1.jpg", desc: "Anima in legno composito. Bilanciamento perfetto per progredire." },
+{ brand: "Head", model: "Kore X 80", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 480, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315483_kore_x_80_lyt_pr_base_1.jpg", desc: "La porta d'ingresso alla famiglia Kore. All-mountain accessibile." },
+
+// --- PACCHETTO ATOMIC (SAVOR & Q) ---
+{ brand: "Atomic", model: "Redster Q4", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 400, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h67/h3e/9960576614430/AA0029556_1_Bent_85.png_rendition_3000_3000.jpg", desc: "Per chi scia poche volte l'anno e vuole divertirsi subito." },
+{ brand: "Atomic", model: "Redster Q5", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 480, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h7d/h9e/9960536408094/AA0029532_1_Redster_S9_Revoshock_S_X_12_GW_Grey.png_rendition_3000_3000.jpg", desc: "Un gradino sopra il Q4. Più tenuta sul duro." },
+{ brand: "Atomic", model: "Cloud Q9", gender: "donna", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 450, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h47/hfb/9960551743518/AA0029554_1_Cloud_C12_Revoshock_C_M_10_GW_Black.png_rendition_3000_3000.jpg", desc: "Elegante e fluido. Ottimo per piste blu e rosse." },
+{ brand: "Atomic", model: "Maverick 86 C", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 490, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/he0/h07/9960586936350/AA0029580_1_Maverick_95_TI.png_rendition_3000_3000.jpg", desc: "Carbonio (C) al posto del titanal per risparmiare peso e soldi." },
+
+// --- PACCHETTO ELAN (EXPLORE & ELEMENT) ---
+{ brand: "Elan", model: "Explore 8", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 380, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhrm23_explore_6_green_ls_1.jpg", desc: "WaveFlex technology. Facile da flettere, rigido in torsione." },
+{ brand: "Elan", model: "Element White", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 380, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhqn23_element_green_ls_1.jpg", desc: "Lo sci che corregge gli errori di bilanciamento." },
+{ brand: "Elan", model: "Snow Black", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 300, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/c/acjhzj23_wildcat_76_ls_1.jpg", desc: "Il modello base donna più venduto. Leggerezza estrema." },
+{ brand: "Elan", model: "Ripstick 88", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 499, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhgz23_ripstick_96_black_edition_1.jpg", desc: "Spesso in offerta. Il miglior freeride/allmountain sotto i 500€." },
+
+// --- PACCHETTO VOLKL (DEACON/RTM ENTRY) ---
+{ brand: "Volkl", model: "Deacon X", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 350, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/124111_peregrine_82_flat_1.jpg", desc: "Perfetto per chi noleggia e vuole comprare il primo sci." },
+{ brand: "Volkl", model: "Deacon 75", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 450, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/124101_peregrine_72_flat_1.jpg", desc: "Anima in legno e fianco dritto. Qualità Volkl a buon prezzo." },
+{ brand: "Volkl", model: "Flair 76", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 380, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122416_yumi_84_flat_1_1.jpg", desc: "Sci facile per sciatrici in evoluzione. Molto maneggevole." },
+{ brand: "Volkl", model: "Bash 86", gender: "unisex", cat: "freestyle", lvl: "intermedio", radius: "medio", mood: "comfort", price: 380, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122442_revolt_90_flat_1_1.jpg", desc: "Un passo avanti rispetto al Bash 81. Più stabile sui salti." },
+
+// --- PACCHETTO NORDICA (DRIVE & TRANSFIRE) ---
+{ brand: "Nordica", model: "Drive 76", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 300, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A124800001_DOBERMANN_SPITFIRE_70_TI_FDT_1.jpg", desc: "Esclusiva per grandi catene. Robusto ed economico." },
+{ brand: "Nordica", model: "Spitfire CA", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "performance", price: 450, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A124400001_DOBERMANN_SPITFIRE_70_PRO_P_XCELL_14_FDT_1_1.jpg", desc: "Versione Carbon (CA). Meno aggressivo del Titanal, perfetto per imparare." },
+{ brand: "Nordica", model: "Wild Belle 74", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 420, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A125800001_BELLE_72_CA_FDT_1.jpg", desc: "Più largo al centro per stabilità su neve primaverile." },
+{ brand: "Nordica", model: "Soul Rider 84", gender: "unisex", cat: "freestyle", lvl: "principiante", radius: "medio", mood: "comfort", price: 350, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A134600001_UNLEASHED_90_FLAT_1.jpg", desc: "Leggendario sci park entry level. Divertimento puro." },
+
+// --- PACCHETTO FISCHER (RC ONE LITE) ---
+{ brand: "Fischer", model: "RC One Lite 73", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 350, img: "https://www.fischersports.com/media/image/5a/8e/31/P06023_RC4_Worldcup_SC_M-Track_Front_1280x1280.jpg", desc: "Uno dei più leggeri sul mercato. Fatica zero." },
+{ brand: "Fischer", model: "RC One 78 GT", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 480, img: "https://www.fischersports.com/media/image/22/58/5c/P05021_RC_One_86_GT_Multiflex_Front.jpg", desc: "Spesso in offerta sotto i 500€. Ottimo valore." },
+{ brand: "Fischer", model: "XTR RC4", gender: "unisex", cat: "pista", lvl: "principiante", radius: "medio", mood: "comfort", price: 280, img: "https://www.fischersports.com/media/image/5a/8e/31/P06023_RC4_Worldcup_SC_M-Track_Front_1280x1280.jpg", desc: "Versione rental robustissima. Ottimo per chi distrugge gli sci." },
+
+// --- PACCHETTO SALOMON (STANCE & QST) ---
+{ brand: "Salomon", model: "Stance 80", gender: "unisex", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 450, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw18544521/images/L47000200/L47000200_0_G1.jpg", desc: "Titanal frame per stabilità, ma facile da gestire." },
+{ brand: "Salomon", model: "QST Lux 92", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 490, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dwf8324832/images/L41134700/L41134700_0_G1.jpg", desc: "Best seller all-mountain donna. Spesso si trova a buon prezzo." },
+{ brand: "Salomon", model: "S/Max N°6", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 350, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw8374828f/images/L47355100/L47355100_0_G1.jpg", desc: "Specifico donna. Intuitivo e leggero." },
+{ brand: "Salomon", model: "QST Ripper", gender: "unisex", cat: "freeride", lvl: "principiante", radius: "medio", mood: "comfort", price: 300, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw38294821/images/L41494400/L41494400_0_G1.jpg", desc: "Versione junior/teenager che va bene anche per adulti leggeri." },
+
+// --- PACCHETTO DYNASTAR (M-MENACE) ---
+{ brand: "Dynastar", model: "M-Menace 80", gender: "unisex", cat: "allmountain", lvl: "principiante", radius: "medio", mood: "comfort", price: 300, img: "https://www.dynastar.com/media/catalog/product/d/a/dalm001_m-pro_99_main_v1.jpg", desc: "Sci libero e facile. Ottimo per imparare anche fuori pista." },
+{ brand: "Dynastar", model: "M-Menace 90", gender: "unisex", cat: "freeride", lvl: "intermedio", radius: "medio", mood: "comfort", price: 400, img: "https://www.dynastar.com/media/catalog/product/d/a/dalm003_m-free_99_main_v1.jpg", desc: "Più largo per galleggiare meglio. Prezzo super." },
+{ brand: "Dynastar", model: "Speed 263", gender: "unisex", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 280, img: "https://www.dynastar.com/media/catalog/product/d/a/dalb001_speed_course_master_gs_konect_main_v1.jpg", desc: "Sci da pista classico. Poca spesa, tanta resa per principianti." },
+{ brand: "Dynastar", model: "E-Lite 3", gender: "donna", cat: "pista", lvl: "principiante", radius: "corto", mood: "comfort", price: 320, img: "https://www.dynastar.com/media/catalog/product/d/a/dald002_e_lite_7_xpres_main_v1.jpg", desc: "Leggerissimo. Ideale per sciatrici occasionali." },
+
+// --- PACCHETTO K2 (DREAMSICLE) ---
+{ brand: "K2", model: "Dreamsicle 85", gender: "donna", cat: "allmountain", lvl: "intermedio", radius: "medio", mood: "comfort", price: 420, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw4f883213/images/K2/Skis/A230300601_2324_K2_Mindbender_89Ti_Ski_A_Ti.jpg?sw=800", desc: "Grafica stupenda e facilità d'uso. All-mountain femminile." },
+
+// --- PACCHETTO ROSSIGNOL (FORZA SERIES - NEW CARVING) ---
+{ brand: "Rossignol", model: "Forza 70D V-Ti", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 900, img: "https://www.rossignol.com/media/catalog/product/r/a/ramrp01_forza_70_v-ti_konect_main_v1.jpg", desc: "La rivoluzione del carving. Angoli di piega estremi per sciatori esperti." },
+{ brand: "Rossignol", model: "Forza 60D V-Ti", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 750, img: "https://www.rossignol.com/media/catalog/product/r/a/ramrq01_forza_60_v-ti_konect_main_v1.jpg", desc: "Carving potente ma meno rigido del 70. Divertimento puro." },
+{ brand: "Rossignol", model: "Forza 40D", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 550, img: "https://www.rossignol.com/media/catalog/product/r/a/ramrs01_forza_40_v-ca_xpress_main_v1.jpg", desc: "Per imparare a piegare. Larghezza extra in punta per facilitare l'ingresso." },
+{ brand: "Rossignol", model: "Hero Master LT", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "lungo", mood: "performance", price: 1100, img: "https://www.rossignol.com/media/catalog/product/r/a/ralhe01_hero_master_lt_r22_main_v1.jpg", desc: "Sci gara 'addolcito'. Stabilità e velocità da Coppa del Mondo." },
+{ brand: "Rossignol", model: "Hero Elite Plus Ti", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 950, img: "https://www.rossignol.com/media/catalog/product/r/a/ralbz03_hero_elite_plus_ti_konect_main_v1.jpg", desc: "Più largo (78mm) per nevi mosse, ma con anima race." },
+
+// --- PACCHETTO SALOMON (ADDIKT & S/RACE) ---
+{ brand: "Salomon", model: "Addikt Pro", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 850, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw8374828f/images/L47355100/L47355100_0_G1.jpg", desc: "Nuova serie 'Addikt'. Coda morbida per uscire dalla curva con stile." },
+{ brand: "Salomon", model: "Addikt", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 650, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw18544521/images/L47000200/L47000200_0_G1.jpg", desc: "Divertente e vivace. Tecnologia Motion Tail per curve fluide." },
+{ brand: "Salomon", model: "S/Max 12", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw8374828f/images/L47355100/L47355100_0_G1.jpg", desc: "Precisione chirurgica. Doppio strato di Titanal." },
+{ brand: "Salomon", model: "S/Max N°12", gender: "donna", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dwf8324832/images/L41134700/L41134700_0_G1.jpg", desc: "Top di gamma donna. Potente ma leggero." },
+{ brand: "Salomon", model: "S/Max N°10", gender: "donna", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 600, img: "https://www.salomon.com/on/demandware.static/-/Sites-salomon-master-catalog/default/dw8374828f/images/L47355100/L47355100_0_G1.jpg", desc: "L'equilibrio perfetto tra performance e facilità." },
+
+// --- PACCHETTO ATOMIC (REDSTER & CLOUD) ---
+{ brand: "Atomic", model: "Redster X7 Revoshock C", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "performance", price: 750, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h7d/h9e/9960536408094/AA0029532_1_Redster_S9_Revoshock_S_X_12_GW_Grey.png_rendition_3000_3000.jpg", desc: "Multi-raggio versatile. Ideale per sciare tutto il giorno." },
+{ brand: "Atomic", model: "Redster Q7.8", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 700, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h03/h68/9960541782046/AA0029536_1_Redster_Q9_8_Revoshock_S_X_12_GW_Black.png_rendition_3000_3000.jpg", desc: "Più largo (85mm) per piste rovinate al pomeriggio." },
+{ brand: "Atomic", model: "Cloud C14 Revoshock S", gender: "donna", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 900, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h47/hfb/9960551743518/AA0029554_1_Cloud_C12_Revoshock_C_M_10_GW_Black.png_rendition_3000_3000.jpg", desc: "La regina delle piste. Tecnologia gara in uno sci elegante." },
+{ brand: "Atomic", model: "Cloud C11", gender: "donna", cat: "pista", lvl: "intermedio", radius: "medio", mood: "performance", price: 650, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h47/hfb/9960551743518/AA0029554_1_Cloud_C12_Revoshock_C_M_10_GW_Black.png_rendition_3000_3000.jpg", desc: "Legno leggero e titanal. Reattivo e scattante." },
+{ brand: "Atomic", model: "Redster G7", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "lungo", mood: "performance", price: 700, img: "https://www.atomic.com/cdn-cgi/image/format=auto,width=1200/https://salomon-atomic-media.s3.amazonaws.com/sys-master/atomic-images/h33/h0f/9960538767390/AA0029524_1_Redster_G9_Revoshock_S_X_12_GW_Red.png_rendition_3000_3000.jpg", desc: "Gigante accessibile. Curve ampie senza bruciare le gambe." },
+
+// --- PACCHETTO HEAD (REBELS & SHAPE) ---
+{ brand: "Head", model: "Worldcup Rebels e-Race Pro", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 1050, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/313243_wc_rebels_e-speed_freeflex_st_base_1.jpg", desc: "Piastra gara WCR. Una bomba di reattività." },
+{ brand: "Head", model: "Supershape e-Original", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 850, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/313303_supershape_e-magnum_pr_base_1.jpg", desc: "Il vero slalom carver della famiglia Supershape. Corto raggio." },
+{ brand: "Head", model: "Supershape e-Titan", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 900, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/313303_supershape_e-magnum_pr_base_1.jpg", desc: "Il più largo (84mm). Spacca tutto, anche la neve primaverile." },
+{ brand: "Head", model: "Absolut Joy", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 550, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315603_super_joy_joy_slr_pro_base_1.jpg", desc: "Equilibrio perfetto. Lo sci che ti fa sentire brava." },
+{ brand: "Head", model: "Shape e-V10", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 700, img: "https://www.head.com/media/catalog/product/cache/44c3c2f90994f380155b94420392f442/3/1/315223_shape_e-v8_pr_11_gw_base_1.jpg", desc: "Testa larga per un ingresso curva automatico. Divertente." },
+
+// --- PACCHETTO VOLKL (PEREGRINE & RACETIGER) ---
+{ brand: "Volkl", model: "Racetiger SL", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 980, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122031_racetiger_gs_flat_1_1.jpg", desc: "Lo standard dello slalom. 3D.Glass per pop in uscita." },
+{ brand: "Volkl", model: "Racetiger RC", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "lungo", mood: "performance", price: 780, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122031_racetiger_gs_flat_1_1.jpg", desc: "Race Carver. Meno nervoso del GS, perfetto per archi ampi." },
+{ brand: "Volkl", model: "Peregrine 76", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 920, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/124111_peregrine_82_flat_1.jpg", desc: "Sostituisce il Deacon 76. Un mostro di polivalenza." },
+{ brand: "Volkl", model: "Flair 79", gender: "donna", cat: "pista", lvl: "intermedio", radius: "medio", mood: "performance", price: 650, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122416_yumi_84_flat_1_1.jpg", desc: "Struttura 3D Ridge. Leggero ma stabile in velocità." },
+{ brand: "Volkl", model: "Racetiger SL Master", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 1200, img: "https://www.volkl.com/media/catalog/product/cache/6b3901b02534571933544d6583995f00/1/2/122031_racetiger_gs_flat_1_1.jpg", desc: "Anima in frassino (World Cup). Potenza illimitata." },
+
+// --- PACCHETTO FISCHER (THE CURV & RC4) ---
+{ brand: "Fischer", model: "The Curv GT", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 950, img: "https://www.fischersports.com/media/image/5a/8e/31/P06023_RC4_Worldcup_SC_M-Track_Front_1280x1280.jpg", desc: "La macchina da corsa più larga. Stabilità totale." },
+{ brand: "Fischer", model: "The Curv DTX", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "performance", price: 800, img: "https://www.fischersports.com/media/image/22/58/5c/P05021_RC_One_86_GT_Multiflex_Front.jpg", desc: "Divertente e dinamico. Triplo raggio." },
+{ brand: "Fischer", model: "RC4 Power", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, img: "https://www.fischersports.com/media/image/5a/8e/31/P06023_RC4_Worldcup_SC_M-Track_Front_1280x1280.jpg", desc: "Look da gara, cuore tenero. Facile da gestire." },
+{ brand: "Fischer", model: "RC4 RCS", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, img: "https://www.fischersports.com/media/image/5a/8e/31/P06023_RC4_Worldcup_SC_M-Track_Front_1280x1280.jpg", desc: "Race Carve Slalom. Agile e scattante, ottimo prezzo." },
+{ brand: "Fischer", model: "RC One 74", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 500, img: "https://www.fischersports.com/media/image/22/58/5c/P05021_RC_One_86_GT_Multiflex_Front.jpg", desc: "Turn Zone per alleggerire la spatola. Curva facile." },
+
+// --- PACCHETTO NORDICA (DOBERMANN & BELLE) ---
+{ brand: "Nordica", model: "Dobermann Spitfire 76 RB", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 900, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A124400001_DOBERMANN_SPITFIRE_70_PRO_P_XCELL_14_FDT_1_1.jpg", desc: "RB = Race Bridge. Rinforzi in carbonio per massima reattività." },
+{ brand: "Nordica", model: "Dobermann Spitfire 80 RB", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 920, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A124400001_DOBERMANN_SPITFIRE_70_PRO_P_XCELL_14_FDT_1_1.jpg", desc: "Largo 80mm. Un treno su binari anche su neve rovinata." },
+{ brand: "Nordica", model: "Belle SL", gender: "donna", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 650, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A125800001_BELLE_72_CA_FDT_1.jpg", desc: "Slalom carver specifico per donne che vogliono spingere." },
+{ brand: "Nordica", model: "Spitfire 72", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 550, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A124800001_DOBERMANN_SPITFIRE_70_TI_FDT_1.jpg", desc: "La porta d'ingresso al mondo Dobermann. Divertente." },
+{ brand: "Nordica", model: "Sentra S 4", gender: "donna", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 400, img: "https://www.nordica.com/media/catalog/product/cache/f1b5204487211516f15598587372d634/0/A/0A125800001_BELLE_72_CA_FDT_1.jpg", desc: "Leggero e stiloso. Per sciatrici turistiche." },
+
+// --- PACCHETTO BLIZZARD (FIREBIRD & PHOENIX) ---
+{ brand: "Blizzard", model: "Firebird WRC", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "lungo", mood: "performance", price: 950, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A203200001_FIREBIRD_HRC_xcell_14_1.jpg", desc: "World Cup Race (WRC). Gigante per archi lunghi e veloci." },
+{ brand: "Blizzard", model: "Firebird SRC", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 950, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A203600001_FIREBIRD_SRC_xcell_14_1.jpg", desc: "Slalom Race Carve (SRC). Esplosivo nello stretto." },
+{ brand: "Blizzard", model: "Thunderbird R13", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 900, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A105400001_THUNDERBIRD_R15_WB_LTD_xcell_12_1.jpg", desc: "Raggio 13m. Curva automatica e tenuta granitica." },
+{ brand: "Blizzard", model: "Phoenix R14 Pro", gender: "donna", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 750, img: "https://www.blizzard-tecnica.com/media/catalog/product/cache/e06b72355404496739825b59695d666d/8/A/8A210200001_PHOENIX_R13_Ca_TPX_11_DEMO_1.jpg", desc: "Il top di gamma donna. Stabilità e smorzamento vibrazioni." },
+
+// --- PACCHETTO ELAN & DYNASTAR (CARVING) ---
+{ brand: "Elan", model: "Amphibio 18 Ti2", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 900, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhgz23_ripstick_96_black_edition_1.jpg", desc: "Doppio Titanal. La punta di diamante di Elan. Potente." },
+{ brand: "Elan", model: "Amphibio 16 Ti", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhgz23_ripstick_96_black_edition_1.jpg", desc: "Leggermente più morbido del 18, ma sempre performante." },
+{ brand: "Elan", model: "Primetime 44", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "performance", price: 750, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/b/abjhsb23_primetime_55_fusion_x_1.jpg", desc: "Più stretto del 55. Cambio lamina ultra veloce." },
+{ brand: "Elan", model: "Insomnia Elite", gender: "donna", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 700, img: "https://elanskis.com/media/catalog/product/cache/78e8f8f853920790150965706346292b/a/c/acjhzj23_wildcat_76_ls_1.jpg", desc: "Asimmetrico donna. Eleganza e aggressività." },
+{ brand: "Dynastar", model: "Speed Omeglass Master SL", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 1000, img: "https://www.dynastar.com/media/catalog/product/d/a/dalb001_speed_course_master_gs_konect_main_v1.jpg", desc: "Il riferimento per lo slalom in campo libero. Incredibile." },
+{ brand: "Dynastar", model: "Speed 963", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 900, img: "https://www.dynastar.com/media/catalog/product/d/a/dalb001_speed_course_master_gs_konect_main_v1.jpg", desc: "Tecnologia Hybrid Core. Fluido e silenzioso sulla neve." },
+{ brand: "Dynastar", model: "E-Lite 9", gender: "donna", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 800, img: "https://www.dynastar.com/media/catalog/product/d/a/dald002_e_lite_7_xpres_main_v1.jpg", desc: "Top di gamma pista donna. Prestazioni senza compromessi." },
+
+// --- PACCHETTO K2 & STOCKLI (PISTA) ---
+{ brand: "K2", model: "Disruption STi", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "corto", mood: "performance", price: 750, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw55443322/images/K2/Skis/A230302001_2324_K2_Disruption_78C_Ski_A_Ti.jpg?sw=800", desc: "Short Turn (ST). Slalom carver americano, molto divertente." },
+{ brand: "K2", model: "Disruption SC", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "medio", mood: "comfort", price: 550, img: "https://k2snow.com/dw/image/v2/BDCH_PRD/on/demandware.static/-/Sites-k2-master-catalog/default/dw55443322/images/K2/Skis/A230302001_2324_K2_Disruption_78C_Ski_A_Ti.jpg?sw=800", desc: "Carbonio. Facile da girare, ottimo per migliorare." },
+{ brand: "Stockli", model: "Laser WRT", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 1500, img: "https://www.stoeckli.ch/cdn/shop/files/Ski_Laser_SC_Orea_2023_24_Front_1000x1000.png?v=1685600000", desc: "Il mix perfetto tra GS e SL. Lo sci definitivo (e costoso)." },
+{ brand: "Stockli", model: "Laser SX", gender: "unisex", cat: "pista", lvl: "avanzato", radius: "medio", mood: "performance", price: 1400, img: "https://www.stoeckli.ch/cdn/shop/files/Ski_Laser_GS_2023_24_Front_1000x1000.png?v=1685600000", desc: "Skicross. Stabile in aria e sui salti, veloce in curva." },
+{ brand: "Stockli", model: "Laser CX", gender: "unisex", cat: "pista", lvl: "intermedio", radius: "corto", mood: "comfort", price: 1300, img: "https://www.stoeckli.ch/cdn/shop/files/Ski_Laser_SC_Orea_2023_24_Front_1000x1000.png?v=1685600000", desc: "Il Laser più facile. Leggero e giocoso." },
+
+
+
+
+        
+
+        ];
+    
+        
+
+        
+        let prefs = { gender: '', height: 0, weight: 0, level: '', cat: '', mood: '', radius: '', budget: 0, brand: '' };
+
+        function goHome() {
+            document.getElementById('results-section').classList.add('hidden');
+            document.getElementById('quiz-section').classList.add('hidden');
+            document.getElementById('hero').style.display = 'flex';
+        }
+
+        function startApp() {
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('quiz-section').classList.remove('hidden');
+        }
+
+        function nextStep(n) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-' + n).classList.add('active');
+        }
+
+        function setPref(k, v) {
+            prefs[k] = v;
+        }
+
+        function highlight(el) {
+            el.parentElement.querySelectorAll('.card-option').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function checkStep2() {
+            const h = document.getElementById('height').value;
+            const w = document.getElementById('weight').value;
+            if (!h || !w) { alert("Inserisci i dati per l'analisi biomeccanica."); return; }
+            prefs.height = parseInt(h);
+            prefs.weight = parseInt(w);
+            nextStep(3);
+        }
+
+        function findSki() {
+            // Recupera input finali
+            prefs.radius = document.getElementById('radius').value;
+            prefs.budget = parseInt(document.getElementById('budget').value);
+            prefs.brand = document.getElementById('brand').value;
+            prefs.cat = document.getElementById('category').value;
+
+            // --- MOTORE DI FILTRAGGIO ---
+            const results = skiDB.filter(ski => {
+                // Filtri Hard (Esclusione diretta)
+                if (ski.cat !== prefs.cat) return false;
+                if (ski.price > prefs.budget) return false;
+
+                // Filtro Genere
+                if (prefs.gender === 'uomo' && ski.gender === 'donna') return false;
+                if (prefs.gender === 'donna' && ski.gender === 'uomo') return false;
+
+                // Filtro Livello (Cross-matching)
+                if (prefs.level === 'principiante' && ski.lvl === 'avanzato') return false;
+                if (prefs.level === 'avanzato' && ski.lvl === 'principiante') return false;
+
+                // Filtro Marca
+                if (prefs.brand !== 'tutte' && ski.brand !== prefs.brand) return false;
+
+                // Filtro Mood (Comfort/Perf) - Opzionale o Soft match
+                if (prefs.mood === 'comfort' && ski.mood === 'performance' && ski.lvl === 'avanzato') return false; // Evita sci gara a chi vuole relax
+
+                // Filtro Raggio
+                if (prefs.radius !== 'any' && ski.cat === 'pista') {
+                    if (prefs.radius !== ski.radius) return false;
+                }
+
+                return true;
+            });
+
+            render(results);
+        }
+
+        function render(skis) {
+            document.getElementById('quiz-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+            const grid = document.getElementById('results-grid');
+            grid.innerHTML = '';
+
+            if (skis.length === 0) {
+                grid.innerHTML = `<h3 style="grid-column:1/-1; text-align:center">Nessun match esatto. Prova a modificare i filtri (es. alza il budget o seleziona "Tutte le marche").</h3>`;
+                return;
+            }
+
+            skis.forEach(ski => {
+                const boot = getBoot(prefs.level, prefs.gender, prefs.cat);
+                const size = getSize(prefs.height, ski.cat, prefs.gender);
+                // Link Google Shopping specifico
+                const searchLink = `https://www.google.com/search?tbm=shop&q=${ski.brand}+${ski.model.replace(/\s/g, '+')}+${new Date().getFullYear()}`;
+
+                const html = `
+<div class="ski-card">
+<div class="ski-header">
+<div>
+<div class="ski-brand">${ski.brand}</div>
+<div class="ski-model-name" style="color:white; margin:0;">${ski.model}</div>
+</div>
+<div class="ski-price">€${ski.price}</div>
+</div>
+
+<div class="ski-body">
+<div class="specs-row">
+<span class="spec-tag">${ski.cat.toUpperCase()}</span>
+<span class="spec-tag">${ski.radius} raggio</span>
+<span class="spec-tag">${ski.mood}</span>
+</div>
+<p class="desc">${ski.desc}</p>
+<p><strong>Misura ideale:</strong> ${size} cm</p>
+
+<div class="boot-rec">
+<strong><i class="fa-solid fa-shoe-prints"></i> Scarpone Consigliato:</strong><br>
+Flex: ${boot.flex} | ${boot.type}
+</div>
+</div>
+<a href="${searchLink}" target="_blank" class="buy-link">
+Cerca Prezzi e Offerte <i class="fa-solid fa-cart-shopping"></i>
+</a>
+</div>
+`;
+                grid.innerHTML += html;
+            });
+        }
+
+        function getSize(h, cat, gen) {
+            let s = h;
+            if (cat === 'pista') s -= 10;
+            if (cat === 'allmountain') s -= 5;
+            if (gen === 'donna') s -= 2;
+            return s;
+        }
+
+        function getBoot(lvl, gen, cat) {
+            let flex = 90;
+            let type = "Comfort Fit";
+            if (gen === 'uomo') {
+                if (lvl === 'intermedio') flex = 100;
+                if (lvl === 'avanzato') { flex = 120; type = "Performance (Low Volume)"; }
+            } else {
+                flex = 75;
+                if (lvl === 'intermedio') flex = 90;
+                if (lvl === 'avanzato') { flex = 105; type = "Performance W"; }
+            }
+            if (cat === 'freeride') type = "GripWalk Freeride";
+            return { flex, type };
+        }
+    </script>
+</body>
+
+</html>
